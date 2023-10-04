@@ -1,6 +1,15 @@
 {
-	"name": "navdown",
+	"name": "@aurios/navdown",
 	"version": "0.0.1",
+	"author": {
+		"name": "Lucas Ouverney",
+		"email": "realfakenerd@gmails.com",
+		"url": "https://dev-lucasouverney.vercel.app"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AuriOpenSource/navdown"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
