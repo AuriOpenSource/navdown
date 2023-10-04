@@ -1,7 +1,7 @@
 {
 	"name": "@aurios/navdown",
 	"version": "0.1.0",
-	"private": false,
+	"private": "false",
 	"author": {
 		"name": "Lucas Ouverney",
 		"email": "realfakenerd@gmails.com",
