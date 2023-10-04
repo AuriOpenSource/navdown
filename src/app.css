@@ -1,0 +1,9 @@
+body {
+	height: 200dvh;
+	background-color: darkslategrey;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
