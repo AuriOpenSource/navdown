@@ -9,9 +9,7 @@
 			transition: {
 				transitionDuration: '300ms',
 				transitionTimingFunction: 'cubic-bezier(0.291, 0.281, 0, 1.2)'
-			},
-			initialHeight: '0 -80px',
-			scrolledHeight: '0 0'
+			}
 		}}
 	>
 		<a href="/">link 1</a>

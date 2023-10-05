@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"author": {
 		"name": "Lucas Ouverney",
-		"email": "realfakenerd@gmails.com",
+		"email": "realfakenerd@gmail.com",
 		"url": "https://dev-lucasouverney.vercel.app"
 	},
 	"repository": {
@@ -19,8 +19,8 @@
 		"test": "npm run test:integration && npm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write .",
+		"lint": "prettier --cache --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --cache --plugin-search-dir . --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest"
 	},
@@ -38,6 +38,11 @@
 	"peerDependencies": {
 		"svelte": "^4.0.0"
 	},
+	"keywords": [
+		"svelte",
+		"action",
+		"navbar"
+	],
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
