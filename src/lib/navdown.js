@@ -33,21 +33,20 @@ function debounce(fn, delay = 200) {
  * @param {Options} options - The "options" parameter is an object that contains additional configuration options
  * for the "handleScroll" function. It is optional and can be omitted if not needed.
  */
-function handleScroll(node, options) {
+const handleScroll = (node, { transition, initialHeight, scrolledHeight }) => {
     const style = node.style;
     let lastScrollTop = 0;
 
-    if (typeof options.transition !== 'string') {
-        const transition = options.transition;
+    if (typeof transition !== 'string') {
         style.transitionDelay = transition?.transitionDelay ?? '0s';
         style.transitionDuration = transition?.transitionDuration ?? '300ms';
         style.transitionProperty = transition?.transitionProperty ?? 'translate';
         style.transitionTimingFunction = transition?.transitionTimingFunction ?? transitionTimingFunction;
     }
 
-    if (typeof options.transition === 'string') style.transition = options.transition;
+    if (typeof transition === 'string') style.transition = transition;
 
-    style.translate = options.initialHeight ?? initialBottomValue;
+    style.translate = initialHeight ?? initialBottomValue;
 
     /**
      * The function updates the scroll position and adjusts the position of a node and a floating action
@@ -56,7 +55,7 @@ function handleScroll(node, options) {
     function updateScroll() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const isScrollingDown = scrollTop > lastScrollTop;
-        style.translate = isScrollingDown ? options.scrolledHeight ?? scrolledDownBottomValue : options.initialHeight ?? initialBottomValue;
+        style.translate = isScrollingDown ? scrolledHeight ?? scrolledDownBottomValue : initialHeight ?? initialBottomValue;
 
         lastScrollTop = scrollTop;
     }

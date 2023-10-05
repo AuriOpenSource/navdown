@@ -54,7 +54,7 @@ interface TransitionOptions {
     transitionProperty?: Property | string;
 }
 
-interface Options {
+declare interface Options {
     /**
      * Transition option.
      * Can be string or an object
