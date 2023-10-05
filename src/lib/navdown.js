@@ -1,4 +1,4 @@
-const transitionTimingFunction = 'cubic-bezier(0.291, 0.281, 0, 1.2)';
+const DEFAULT_DEBOUNCE_DELAY = 100; 
 const initialBottomValue = '0px';
 const scrolledDownBottomValue = '0px 80px';
 
@@ -12,7 +12,7 @@ const scrolledDownBottomValue = '0px 80px';
  * @returns The debounce function returns a new function that will execute the provided function (fn)
  * after a specified delay (delay) has passed.
  */
-function debounce(fn, delay = 200) {
+function debounce(fn, delay = DEFAULT_DEBOUNCE_DELAY) {
 	/** @type {string | number | NodeJS.Timeout | undefined} */
 	let timer;
 
@@ -26,44 +26,54 @@ function debounce(fn, delay = 200) {
 }
 
 /**
- * The function `handleScroll` updates the position of a node and a floating action button based on the
+ * The function updates the scroll position based on the direction of scrolling.
+ * @param {CSSStyleDeclaration} style - An object representing the CSS style properties that will be updated.
+ * @param {number} lastScrollTop - The last recorded scroll position. It is used to determine if the user is
+ * scrolling up or down.
+ * @param {string} [scrolledHeight] - The `scrolledHeight` parameter represents the value to be set for the
+ * `translate` property when the user is scrolling down.
+ * @param {string} [initialHeight] - The initial height of the element before any scrolling occurs.
+ */
+function updateScroll(style, lastScrollTop, scrolledHeight, initialHeight) {
+	const scrollTop = window.scrollY || document.documentElement.scrollTop;
+	const isScrollingDown = scrollTop > lastScrollTop;
+
+	style.translate = isScrollingDown
+		? scrolledHeight ?? scrolledDownBottomValue
+		: initialHeight ?? initialBottomValue;
+
+	lastScrollTop = scrollTop;
+}
+
+/**
+ * The function `handleScroll` updates the position of a nav element based on the
  * scroll direction.
  * @param {HTMLElement} node - The node parameter represents the DOM element that you want to adjust the position of
  * based on the scroll direction.
  * @param {import("./lib.js").Options} options - The "options" parameter is an object that contains additional configuration options
  * for the "handleScroll" function. It is optional and can be omitted if not needed.
  */
-const handleScroll = (node, { transition, initialHeight, scrolledHeight }) => {
-	const style = node.style;
+function handleScroll(node, { transition, initialHeight, scrolledHeight }) {
 	let lastScrollTop = 0;
 
-	if (typeof transition !== 'string') {
-		style.transitionDelay = transition?.transitionDelay ?? '0s';
-		style.transitionDuration = transition?.transitionDuration ?? '300ms';
-		style.transitionProperty = transition?.transitionProperty ?? 'translate';
-		style.transitionTimingFunction =
-			transition?.transitionTimingFunction ?? transitionTimingFunction;
-	}
+	
+	const style = node.style;
+	style.willChange = 'translate';
 
-	if (typeof transition === 'string') style.transition = transition;
+	style.transitionDelay = transition?.transitionDelay ?? '0s';
+	style.transitionDuration = transition?.transitionDuration ?? '300ms';
+	style.transitionProperty = transition?.transitionProperty ?? 'translate';
+	style.transitionTimingFunction = transition?.transitionTimingFunction ?? 'cubic-bezier(0.291, 0.281, 0, 1.2)';
 
+
+	console.log(transition);
 	style.translate = initialHeight ?? initialBottomValue;
 
-	/**
-	 * The function updates the scroll position and adjusts the position of a node and a floating action
-	 * button based on the scroll direction.
-	 */
-	function updateScroll() {
-		const scrollTop = window.scrollY || document.documentElement.scrollTop;
-		const isScrollingDown = scrollTop > lastScrollTop;
-		style.translate = isScrollingDown
-			? scrolledHeight ?? scrolledDownBottomValue
-			: initialHeight ?? initialBottomValue;
-
-		lastScrollTop = scrollTop;
-	}
-
-	addEventListener('scroll', debounce(updateScroll, 100), { passive: true });
-};
+	addEventListener(
+		'scroll',
+		debounce(() => updateScroll(style, lastScrollTop, scrolledHeight, initialHeight), DEFAULT_DEBOUNCE_DELAY),
+		{ passive: true }
+	);
+}
 
 export default handleScroll;

@@ -1,37 +1,73 @@
+/**
+ * A function that can be debounced.
+ *
+ * Debouncing is a technique that delays the execution of a function until a certain amount of time has passed since the last time it was called. This is useful for preventing functions from being called too often, such as when resizing a window or scrolling a page.
+ *
+ * @example
+ *
+ * const debouncedFunction = debounce((...args: unknown[]) => {
+ *   // Do something
+ * }, 100);
+ *
+ * addEventListener('resize', debouncedFunction);
+ */
 export type DebounceFunction = (...args: unknown[]) => void;
 
 type TimingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
-
 type SecondOrMilisecond = `${number}s` | `${number}ms`;
-
 type Property = 'all' | 'position' | 'translate';
 
-interface TransitionOptions {
+/**
+ * An object that contains options for configuring a transition.
+ *
+ * @example
+ *
+ * const transitionOptions: TransitionOptions = {
+ *   transitionDuration: '0.3s',
+ *   transitionTimingFunction: 'ease-in-out',
+ *   transitionDelay: '0s',
+ *   transitionProperty: 'transform',
+ * };
+ */
+export interface TransitionOptions {
 	/**
-	 * Used to set the transition duration.
+	 * A unit of time that can be used to specify the duration or delay of a transition.
 	 *
-	 * Can be in seconds or miliseconds.
+	 * The two most common units of time used for transitions are seconds and milliseconds. You can use either unit by appending the letter `s` for seconds or `ms` for milliseconds.
 	 *
 	 * @example
-	 * '0.3s' or '300ms'
+	 *
+	 * // Seconds
+	 * '0.3s'
+	 *
+	 * // Milliseconds
+	 * '300ms'
 	 */
 	transitionDuration?: SecondOrMilisecond;
 	/**
-	 * Used to set the transition easing.
+	 * A type of timing function that can be used to control the animation of a transition.
 	 *
-	 * Can be linear, ease-in, ease-in-out or a cubic-bezier
+	 * The following timing functions are available:
 	 *
-	 * @example
-	 * cubic-bezier(0.68, -0.55, 0.27, 1.55)
+	 * * `linear`: The animation will proceed at a constant speed.
+	 * * `ease`: The animation will start slowly and then speed up.
+	 * * `ease-in`: The animation will start slowly and then stay at a constant speed.
+	 * * `ease-out`: The animation will start at a constant speed and then slow down.
+	 * * `ease-in-out`: The animation will start slowly, speed up, and then slow down again.
 	 */
 	transitionTimingFunction?: TimingFunction | string;
 	/**
-	 * Used to set the transition delay.
+	 * A unit of time that can be used to specify the duration or delay of a transition.
 	 *
-	 * Just like duration, can be seconds or miliseconds.
+	 * The two most common units of time used for transitions are seconds and milliseconds. You can use either unit by appending the letter `s` for seconds or `ms` for milliseconds.
 	 *
 	 * @example
-	 * '0.3s' or '300ms'
+	 *
+	 * // Seconds
+	 * '0.3s'
+	 *
+	 * // Milliseconds
+	 * '300ms'
 	 */
 	transitionDelay?: SecondOrMilisecond;
 	/**
@@ -45,15 +81,27 @@ interface TransitionOptions {
 	transitionProperty?: Property | string;
 }
 
+/**
+ * An interface of options for the function.
+ */
 export interface Options {
 	/**
 	 * Transition option.
-	 * Can be string or an object
+	 * Can be string or an object.
 	 *
 	 * @example
+	 * // As an object, it contains options for configuring a transition.
+	 * const transitionOptions: TransitionOptions = {
+	 *   transitionDuration: '0.3s',
+	 *   transitionTimingFunction: 'ease-in-out',
+	 *   transitionDelay: '0s',
+	 *   transitionProperty: 'transform',
+	 * };
+	 *
+	 * // As a string, it's like the shorthand on CSS
 	 * 'all 300ms linear 0s'
 	 */
-	transition?: string | TransitionOptions;
+	transition?: TransitionOptions;
 	/**
 	 * Initial height of the navbar element.
 	 *
