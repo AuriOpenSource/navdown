@@ -1,4 +1,4 @@
-const DEFAULT_DEBOUNCE_DELAY = 100; 
+const DEFAULT_DEBOUNCE_DELAY = 100;
 const initialBottomValue = '0px';
 const scrolledDownBottomValue = '0px 80px';
 
@@ -56,22 +56,24 @@ function updateScroll(style, lastScrollTop, scrolledHeight, initialHeight) {
 function handleScroll(node, { transition, initialHeight, scrolledHeight }) {
 	let lastScrollTop = 0;
 
-	
 	const style = node.style;
 	style.willChange = 'translate';
 
 	style.transitionDelay = transition?.transitionDelay ?? '0s';
 	style.transitionDuration = transition?.transitionDuration ?? '300ms';
 	style.transitionProperty = transition?.transitionProperty ?? 'translate';
-	style.transitionTimingFunction = transition?.transitionTimingFunction ?? 'cubic-bezier(0.291, 0.281, 0, 1.2)';
-
+	style.transitionTimingFunction =
+		transition?.transitionTimingFunction ?? 'cubic-bezier(0.291, 0.281, 0, 1.2)';
 
 	console.log(transition);
 	style.translate = initialHeight ?? initialBottomValue;
 
 	addEventListener(
 		'scroll',
-		debounce(() => updateScroll(style, lastScrollTop, scrolledHeight, initialHeight), DEFAULT_DEBOUNCE_DELAY),
+		debounce(
+			() => updateScroll(style, lastScrollTop, scrolledHeight, initialHeight),
+			DEFAULT_DEBOUNCE_DELAY
+		),
 		{ passive: true }
 	);
 }
