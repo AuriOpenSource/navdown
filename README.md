@@ -3,25 +3,31 @@
 ### Simple action to hide navbar on scroll
 
 Simple to install
+
 ```shell
   pnpm add -D navdown
 ```
 
 To use is even more simple
+
 ```svelte
-  <nav use:navdown={{
-    transition: {
-      transitionDuration: '250ms',
-      initialHeight: '0px',
-      scrolledHeight: '0px 80px'
-    }
-  }}>
-    <!-- some links -->
-  </nav>
+<nav
+	use:navdown={{
+		transition: {
+			transitionDuration: '250ms'
+		},
+		initialHeight: '0px',
+		scrolledHeight: '0px 80px'
+	}}
+>
+	<!-- some links -->
+</nav>
 ```
+
 Now down is the interface of the options
+
 ```typescript
-  export interface Options {
+export interface Options {
 	/**
 	 * Transition option.
 	 * Can be string or an object.
@@ -72,5 +78,7 @@ Now down is the interface of the options
 ```
 
 ---
+
 ### Have some contribution to make?
+
 Hand this repo an issue then.
