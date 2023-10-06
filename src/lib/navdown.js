@@ -25,16 +25,15 @@ function debounce(fn, delay = DEFAULT_DEBOUNCE_DELAY) {
 	};
 }
 
+let lastScrollTop = 0;
 /**
  * The function updates the scroll position based on the direction of scrolling.
  * @param {CSSStyleDeclaration} style - An object representing the CSS style properties that will be updated.
- * @param {number} lastScrollTop - The last recorded scroll position. It is used to determine if the user is
- * scrolling up or down.
  * @param {string} [scrolledHeight] - The `scrolledHeight` parameter represents the value to be set for the
  * `translate` property when the user is scrolling down.
  * @param {string} [initialHeight] - The initial height of the element before any scrolling occurs.
  */
-function updateScroll(style, lastScrollTop, scrolledHeight, initialHeight) {
+function updateScroll(style, scrolledHeight, initialHeight) {
 	const scrollTop = window.scrollY || document.documentElement.scrollTop;
 	const isScrollingDown = scrollTop > lastScrollTop;
 
@@ -43,6 +42,8 @@ function updateScroll(style, lastScrollTop, scrolledHeight, initialHeight) {
 		: initialHeight ?? initialBottomValue;
 
 	lastScrollTop = scrollTop;
+
+	// console.log(lastScrollTop, scrollTop);
 }
 
 /**
@@ -50,28 +51,25 @@ function updateScroll(style, lastScrollTop, scrolledHeight, initialHeight) {
  * scroll direction.
  * @param {HTMLElement} node - The node parameter represents the DOM element that you want to adjust the position of
  * based on the scroll direction.
- * @param {import("./lib.js").Options} options - The "options" parameter is an object that contains additional configuration options
+ * @param {import("./lib.js").Options} [options] - The "options" parameter is an object that contains additional configuration options
  * for the "handleScroll" function. It is optional and can be omitted if not needed.
  */
-function handleScroll(node, { transition, initialHeight, scrolledHeight }) {
-	let lastScrollTop = 0;
-
+function handleScroll(node, options) {
 	const style = node.style;
 	style.willChange = 'translate';
 
-	style.transitionDelay = transition?.transitionDelay ?? '0s';
-	style.transitionDuration = transition?.transitionDuration ?? '300ms';
-	style.transitionProperty = transition?.transitionProperty ?? 'translate';
+	style.transitionDelay = options?.transition?.transitionDelay ?? '0s';
+	style.transitionDuration = options?.transition?.transitionDuration ?? '300ms';
+	style.transitionProperty = options?.transition?.transitionProperty ?? 'translate';
 	style.transitionTimingFunction =
-		transition?.transitionTimingFunction ?? 'cubic-bezier(0.291, 0.281, 0, 1.2)';
+		options?.transition?.transitionTimingFunction ?? 'cubic-bezier(0.291, 0.281, 0, 1.2)';
 
-	console.log(transition);
-	style.translate = initialHeight ?? initialBottomValue;
+	style.translate = options?.initialHeight ?? initialBottomValue;
 
 	addEventListener(
 		'scroll',
 		debounce(
-			() => updateScroll(style, lastScrollTop, scrolledHeight, initialHeight),
+			() => updateScroll(style, options?.scrolledHeight, options?.initialHeight),
 			DEFAULT_DEBOUNCE_DELAY
 		),
 		{ passive: true }
