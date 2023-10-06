@@ -1,9 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
 	height: 200dvh;
-	background-color: darkslategrey;
 }
 
-* {
-	padding: 0;
-	margin: 0;
-}
