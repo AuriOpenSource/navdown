@@ -1,21 +1,6 @@
-/**
- * A function that can be debounced.
- *
- * Debouncing is a technique that delays the execution of a function until a certain amount of time has passed since the last time it was called. This is useful for preventing functions from being called too often, such as when resizing a window or scrolling a page.
- *
- * @example
- *
- * const debouncedFunction = debounce((...args: unknown[]) => {
- *   // Do something
- * }, 100);
- *
- * addEventListener('resize', debouncedFunction);
- */
-export type DebounceFunction = (...args: unknown[]) => void;
-
 type TimingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
 type SecondOrMilisecond = `${number}s` | `${number}ms`;
-type Property = 'all' | 'position' | 'translate';
+type Property = 'all' | 'position' | 'translate' | 'transform';
 
 /**
  * An object that contains options for configuring a transition.
@@ -113,7 +98,7 @@ export interface Options {
 	 * On the `y` axis positive numbers go down, negative go up.
 	 *
 	 * @example
-	 * '0px -80px'
+	 * '-80px'
 	 */
 	initialHeight?: string;
 	/**
@@ -128,7 +113,7 @@ export interface Options {
 	 * On the `y` axis positive numbers go down, negative go up.
 	 *
 	 * @example
-	 * '0px 80px'
+	 * '80px'
 	 */
 	scrolledHeight?: string;
 }

@@ -1,29 +1,5 @@
-const DEFAULT_DEBOUNCE_DELAY = 100;
 const initialBottomValue = '0px';
-const scrolledDownBottomValue = '0px 80px';
-
-/**
- * The debounce function delays the execution of a function until a certain amount of time has passed
- * since the last time it was called.
- * @param {import("./lib.js").DebounceFunction} fn - The `fn` parameter is a function that you want to debounce. It is the function that will
- * be called after the debounce delay has passed without any further function calls.
- * @param {number} delay - The `delay` parameter is the amount of time in milliseconds that the function should
- * wait before executing the debounced function.
- * @returns The debounce function returns a new function that will execute the provided function (fn)
- * after a specified delay (delay) has passed.
- */
-function debounce(fn, delay = DEFAULT_DEBOUNCE_DELAY) {
-	/** @type {string | number | NodeJS.Timeout | undefined} */
-	let timer;
-
-	return (/** @type {any[]} */ ...args) => {
-		if (timer) clearTimeout(timer);
-
-		timer = setTimeout(() => {
-			fn(...args);
-		}, delay);
-	};
-}
+const scrolledDownBottomValue = '80px';
 
 let lastScrollTop = 0;
 /**
@@ -32,18 +8,16 @@ let lastScrollTop = 0;
  * @param {string} [scrolledHeight] - The `scrolledHeight` parameter represents the value to be set for the
  * `translate` property when the user is scrolling down.
  * @param {string} [initialHeight] - The initial height of the element before any scrolling occurs.
+ * @param {number} scrollTop
  */
-function updateScroll(style, scrolledHeight, initialHeight) {
-	const scrollTop = window.scrollY || document.documentElement.scrollTop;
+function updateScroll(style, scrollTop, scrolledHeight, initialHeight) {
 	const isScrollingDown = scrollTop > lastScrollTop;
 
-	style.translate = isScrollingDown
-		? scrolledHeight ?? scrolledDownBottomValue
-		: initialHeight ?? initialBottomValue;
+	style.transform = isScrollingDown
+		? `translate3d(0, ${scrolledHeight ?? scrolledDownBottomValue}, 0)`
+		: `translate3d(0, ${initialHeight ?? initialBottomValue}, 0)`;
 
 	lastScrollTop = scrollTop;
-
-	// console.log(lastScrollTop, scrollTop);
 }
 
 /**
@@ -54,26 +28,28 @@ function updateScroll(style, scrolledHeight, initialHeight) {
  * @param {import("./lib.js").Options} [options] - The "options" parameter is an object that contains additional configuration options
  * for the "handleScroll" function. It is optional and can be omitted if not needed.
  */
-function handleScroll(node, options) {
+function handleScroll(node, { transition, initialHeight, scrolledHeight } = {}) {
 	const style = node.style;
-	style.willChange = 'translate';
+	style.willChange = 'transform';
 
-	style.transitionDelay = options?.transition?.transitionDelay ?? '0s';
-	style.transitionDuration = options?.transition?.transitionDuration ?? '300ms';
-	style.transitionProperty = options?.transition?.transitionProperty ?? 'translate';
+	style.transitionDelay = transition?.transitionDelay ?? '0s';
+	style.transitionDuration = transition?.transitionDuration ?? '300ms';
+	style.transitionProperty = transition?.transitionProperty ?? 'transform';
 	style.transitionTimingFunction =
-		options?.transition?.transitionTimingFunction ?? 'cubic-bezier(0.291, 0.281, 0, 1.2)';
+		transition?.transitionTimingFunction ?? 'cubic-bezier(0.291, 0.281, 0, 1.2)';
 
-	style.translate = options?.initialHeight ?? initialBottomValue;
+	style.transform = `translate3d(0, ${initialHeight ?? initialBottomValue}, 0)`;
 
-	addEventListener(
-		'scroll',
-		debounce(
-			() => updateScroll(style, options?.scrolledHeight, options?.initialHeight),
-			DEFAULT_DEBOUNCE_DELAY
-		),
-		{ passive: true }
-	);
+	function updateScrollWithRAF() {
+		const scrollTop = window.scrollY || document.documentElement.scrollTop;
+		updateScroll(style, scrollTop, scrolledHeight, initialHeight);
+	}
+	
+	function handleRAF() {
+		requestAnimationFrame(updateScrollWithRAF);
+	}
+
+	addEventListener('scroll', handleRAF, { passive: true });
 }
 
 export default handleScroll;
