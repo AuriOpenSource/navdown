@@ -65,7 +65,7 @@
 				code={`
 			const options = {
 		initialHeight: '0px',
-		scrolledHeight: '0px 80px',
+		scrolledHeight: '80px',
 		transition: {
 			transitionDelay: '0s',
 			transitionDuration: '300ms',
@@ -86,7 +86,7 @@
       transitionDuration: '250ms',
     },
 	initialHeight: '0px',
-	scrolledHeight: '0px 80px'
+	scrolledHeight: '80px'
   }}>
     <!-- some links -->
 	</nav>`}
