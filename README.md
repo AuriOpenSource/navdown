@@ -17,7 +17,7 @@ To use is even more simple
    transitionDuration: '250ms'
   },
   initialHeight: '0px',
-  scrolledHeight: '0px 80px'
+  scrolledHeight: '80px'
  }}
 >
  <!-- some links -->
@@ -56,7 +56,7 @@ export interface Options {
   * On the `y` axis positive numbers go down, negative go up.
   *
   * @example
-  * '0px -80px'
+  * '-80px'
   */
  initialHeight?: string;
  /**
@@ -71,7 +71,7 @@ export interface Options {
   * On the `y` axis positive numbers go down, negative go up.
   *
   * @example
-  * '0px 80px'
+  * '80px'
   */
  scrolledHeight?: string;
 }
